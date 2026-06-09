@@ -5,6 +5,13 @@ metadata:
   name: whoami
   namespace: argocd
 
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: whoami=719572784863.dkr.ecr.us-east-1.amazonaws.com/whoami
+
+    argocd-image-updater.argoproj.io/whoami.update-strategy: newest-build
+
+    argocd-image-updater.argoproj.io/write-back-method: git
+
 spec:
   project: default
 

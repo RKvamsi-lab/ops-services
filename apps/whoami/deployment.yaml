@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: whoami
-        image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/whoami:ee26a5c20d69b54fe10523032006902c8037c5c2
+        image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/whoami:latest
 
         imagePullPolicy: Always
 

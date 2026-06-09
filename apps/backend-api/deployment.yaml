@@ -4,13 +4,6 @@ kind: Deployment
 metadata:
   name: backend-api
 
-env:
-  - name: DATABASE_URL
-    valueFrom:
-      secretKeyRef:
-        name: backend-api-secret
-        key: ops-center-postgres.cizecm0w4phr.us-east-1.rds.amazonaws.com:5432
-
 spec:
   replicas: 2
 
@@ -28,6 +21,13 @@ spec:
         - name: backend-api
           image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/backend-api
           imagePullPolicy: Always
+
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: backend-api-secret
+                  key: DATABASE_URL
 
           ports:
             - containerPort: 8080

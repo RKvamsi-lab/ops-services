@@ -27,7 +27,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: backend-api-secret
-                  key: ops-center-postgres.cizecm0w4phr.us-east-1.rds.amazonaws.com
+                  key: DATABASE_URL
 
           ports:
             - containerPort: 8080

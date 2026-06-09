@@ -29,5 +29,8 @@ spec:
                   name: backend-api-secret
                   key: DATABASE_URL
 
+            - name: PORT
+              value: "8080"
+
           ports:
             - containerPort: 8080

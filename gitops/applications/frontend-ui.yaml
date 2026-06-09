@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: frontend-ui
+  namespace: argocd
+
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: frontend-ui=719572784863.dkr.ecr.ap-south-1.amazonaws.com/frontend-ui
+    argocd-image-updater.argoproj.io/frontend-ui.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/write-back-method: git
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/RKvamsi-lab/ops-services.git
+    targetRevision: main
+    path: apps/frontend-ui
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: frontend-ui
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

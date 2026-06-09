@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: backend-api
+  namespace: argocd
+
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: backend-api=719572784863.dkr.ecr.ap-south-1.amazonaws.com/backend-api
+    argocd-image-updater.argoproj.io/backend-api.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/write-back-method: git
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/RKvamsi-lab/ops-services.git
+    targetRevision: main
+    path: apps/backend-api
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backend-api
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

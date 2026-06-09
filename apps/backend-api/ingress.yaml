@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: backend-api
+
+  annotations:
+
+    alb.ingress.kubernetes.io/scheme: internet-facing
+
+spec:
+
+  ingressClassName: alb
+
+  rules:
+
+  - host: api.rk-labs.xyz
+
+    http:
+
+      paths:
+
+      - path: /
+
+        pathType: Prefix
+
+        backend:
+
+          service:
+            name: backend-api
+
+            port:
+              number: 80

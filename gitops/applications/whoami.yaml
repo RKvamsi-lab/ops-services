@@ -6,11 +6,10 @@ metadata:
   namespace: argocd
 
 spec:
-
   project: default
 
   source:
-    repoURL: https://github.com/<YOUR_GITHUB_ORG>/ops-services.git
+    repoURL: https://github.com/RKvamsi-lab/ops-services.git
     targetRevision: main
     path: apps/whoami
 

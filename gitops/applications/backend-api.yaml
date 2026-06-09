@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 
   annotations:
-    argocd-image-updater.argoproj.io/image-list: backend-api=719572784863.dkr.ecr.ap-south-1.amazonaws.com/backend-api
+    argocd-image-updater.argoproj.io/image-list: backend-api=719572784863.dkr.ecr.us-east-1.amazonaws.com/backend-api
     argocd-image-updater.argoproj.io/backend-api.update-strategy: newest-build
     argocd-image-updater.argoproj.io/write-back-method: git
 

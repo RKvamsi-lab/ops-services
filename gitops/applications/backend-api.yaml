@@ -7,8 +7,16 @@ metadata:
 
   annotations:
     argocd-image-updater.argoproj.io/image-list: backend-api=719572784863.dkr.ecr.us-east-1.amazonaws.com/backend-api
+
     argocd-image-updater.argoproj.io/backend-api.update-strategy: newest-build
+
+    argocd-image-updater.argoproj.io/backend-api.allow-tags: regexp:^.*$
+
     argocd-image-updater.argoproj.io/write-back-method: git
+
+    argocd-image-updater.argoproj.io/git-branch: main
+
+    argocd-image-updater.argoproj.io/write-back-target: kustomization
 
 spec:
   project: default

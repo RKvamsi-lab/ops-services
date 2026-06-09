@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: whoami
+  namespace: whoami
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: whoami
+
+  template:
+    metadata:
+      labels:
+        app: whoami
+
+    spec:
+      containers:
+      - name: whoami
+        image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/whoami:ee26a5c20d69b54fe10523032006902c8037c5c2
+
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 80

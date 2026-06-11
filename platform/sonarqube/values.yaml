@@ -1,8 +1,10 @@
-community:
-  enabled: true
+helm:
+  values: |
+    community:
+      enabled: true
 
-persistence:
-  enabled: true
-  size: 20Gi
+    persistence:
+      enabled: true
+      size: 20Gi
 
-monitoringPasscode: "sonarqube"
+    monitoringPasscode: sonarqube

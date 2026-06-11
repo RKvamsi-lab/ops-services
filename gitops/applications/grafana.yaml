@@ -9,9 +9,17 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/RKvamsi-lab/ops-services.git
-    targetRevision: main
-    path: platform/grafana
+    repoURL: https://grafana.github.io/helm-charts
+    chart: grafana
+    targetRevision: 9.2.10
+
+    helm:
+      values: |
+        adminUser: admin
+
+        persistence:
+          enabled: true
+          size: 10Gi
 
   destination:
     server: https://kubernetes.default.svc

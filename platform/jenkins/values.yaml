@@ -1,0 +1,17 @@
+controller:
+
+  serviceType: ClusterIP
+
+  admin:
+
+    createSecret: true
+
+  ingress:
+
+    enabled: false
+
+persistence:
+
+  enabled: true
+  storageClass: gp3
+  size: 20Gi

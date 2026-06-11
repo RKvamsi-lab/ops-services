@@ -1,0 +1,17 @@
+server:
+  standalone:
+    enabled: true
+
+  dataStorage:
+    enabled: true
+    size: 10Gi
+    storageClass: gp3
+
+ui:
+  enabled: true
+
+injector:
+  enabled: true
+
+csi:
+  enabled: true

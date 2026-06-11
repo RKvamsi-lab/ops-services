@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: vault
+  namespace: vault
+
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    external-dns.alpha.kubernetes.io/hostname: vault.rk-labs.xyz
+
+spec:
+  ingressClassName: alb
+
+  rules:
+  - host: vault.rk-labs.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+
+        backend:
+          service:
+            name: vault-ui
+
+            port:
+              number: 8200

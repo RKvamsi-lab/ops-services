@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: argocd
   namespace: argocd
 spec:
   project: default
@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/RKvamsi-lab/ops-services.git
     targetRevision: main
-    path: gitops/applications
+    path: platform/argocd
 
   destination:
     server: https://kubernetes.default.svc

@@ -9,9 +9,17 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/RKvamsi-lab/ops-services.git
-    targetRevision: main
-    path: platform/sonarqube
+    repoURL: https://SonarSource.github.io/helm-chart-sonarqube
+    chart: sonarqube
+    targetRevision: 2026.1.0
+
+    helm:
+      values: |
+        persistence:
+          enabled: true
+          size: 20Gi
+
+        monitoringPasscode: sonarqube
 
   destination:
     server: https://kubernetes.default.svc

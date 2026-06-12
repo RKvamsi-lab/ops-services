@@ -3,12 +3,20 @@ kind: Ingress
 
 metadata:
   name: grafana
-
   namespace: monitoring
 
   annotations:
     kubernetes.io/ingress.class: alb
+
     alb.ingress.kubernetes.io/group.name: platform
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:719572784863:certificate/009b30bf-e069-454a-8bb1-bf823cfb1b99
+
+    external-dns.alpha.kubernetes.io/hostname: grafana.rk-labs.xyz
 
 spec:
   ingressClassName: alb

@@ -3,3 +3,6 @@ adminUser: admin
 persistence:
   enabled: true
   size: 10Gi
+
+deploymentStrategy:
+  type: Recreate

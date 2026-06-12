@@ -5,14 +5,11 @@ metadata:
   name: karpenter
   namespace: argocd
 
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-
 spec:
   project: default
 
   source:
-    repoURL: oci://public.ecr.aws/karpenter
+    repoURL: oci://public.ecr.aws/karpenter/karpenter
     chart: karpenter
     targetRevision: 1.3.3
 

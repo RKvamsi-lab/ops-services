@@ -1,0 +1,28 @@
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "karpenter-controller-role",
+        "RoleId": "AROA2PCPBK3PQVWJDGXKX",
+        "Arn": "arn:aws:iam::719572784863:role/karpenter-controller-role",
+        "CreateDate": "2026-06-12T14:48:25+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Federated": "arn:aws:iam::719572784863:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/CE67A46B906F0842C513E709193ABB2B"
+                    },
+                    "Action": "sts:AssumeRoleWithWebIdentity",
+                    "Condition": {
+                        "StringEquals": {
+                            "oidc.eks.us-east-1.amazonaws.com/id/CE67A46B906F0842C513E709193ABB2B:sub": "system:serviceaccount:karpenter:karpenter"
+                        }
+                    }
+                }
+            ]
+        },
+        "MaxSessionDuration": 3600,
+        "RoleLastUsed": {}
+    }
+}

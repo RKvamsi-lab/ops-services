@@ -1,0 +1,19 @@
+serviceAccount:
+  create: true
+  name: karpenter
+
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/karpenter-controller-role
+
+settings:
+  clusterName: dev-eks
+
+controller:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+
+    limits:
+      cpu: 1
+      memory: 1Gi

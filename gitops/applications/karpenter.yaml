@@ -1,19 +1,33 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
+
 metadata:
   name: karpenter
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+
 spec:
   project: default
 
   source:
     repoURL: https://charts.karpenter.sh
     chart: karpenter
-    targetRevision: 1.7.0
+
+    targetRevision: 1.6.2
 
     helm:
-      valueFiles:
-        - values.yaml
+      values: |
+        serviceAccount:
+          create: true
+          name: karpenter
+
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/karpenter-controller-role
+
+        settings:
+          clusterName: dev-eks
 
   destination:
     server: https://kubernetes.default.svc

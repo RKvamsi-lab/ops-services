@@ -17,6 +17,18 @@ spec:
       values: |
         image:
           repository: velero/velero
+          tag: v1.18.1
+
+        credentials:
+          useSecret: false
+
+        serviceAccount:
+          server:
+            create: true
+            name: velero
+
+            annotations:
+              eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/rk-labs-velero
 
         configuration:
           backupStorageLocation:
@@ -42,21 +54,9 @@ spec:
               - mountPath: /target
                 name: plugins
 
-        deployNodeAgent: true
-
         snapshotsEnabled: true
 
-        credentials:
-          useSecret: false
-          existingSecret: ""
-
-        serviceAccount:
-          server:
-            create: true
-            name: velero
-
-            annotations:
-              eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/rk-labs-velero
+        deployNodeAgent: true
 
   destination:
     server: https://kubernetes.default.svc

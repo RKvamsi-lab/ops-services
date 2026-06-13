@@ -9,9 +9,35 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/RKvamsi-lab/ops-services.git
-    targetRevision: main
-    path: platform/jenkins
+    repoURL: https://charts.jenkins.io
+    chart: jenkins
+    targetRevision: 5.8.60
+
+    helm:
+      values: |
+        controller:
+
+          admin:
+            createSecret: true
+
+          persistence:
+            enabled: true
+            storageClass: gp3
+            size: 30Gi
+
+          serviceType: ClusterIP
+
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+
+        agent:
+          enabled: true
 
   destination:
     server: https://kubernetes.default.svc
@@ -21,3 +47,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

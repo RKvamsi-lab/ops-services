@@ -1,0 +1,34 @@
+deploymentMode: SingleBinary
+
+singleBinary:
+  replicas: 1
+
+loki:
+  auth_enabled: false
+
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    type: filesystem
+
+persistence:
+  enabled: true
+  storageClass: gp3
+  size: 20Gi
+
+monitoring:
+  serviceMonitor:
+    enabled: true
+
+gateway:
+  enabled: true
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+  limits:
+    cpu: 1000m
+    memory: 2Gi

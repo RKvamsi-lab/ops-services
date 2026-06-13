@@ -11,28 +11,34 @@ spec:
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: prometheus
-    targetRevision: 27.28.1
+    targetRevision: 27.23.0
 
     helm:
       values: |
+        alertmanager:
+          enabled: true
+
+          persistence:
+            enabled: true
+            storageClass: gp3
+            size: 5Gi
+
         server:
           persistentVolume:
+            enabled: true
+            storageClass: gp3
             size: 20Gi
 
-          ingress:
-            enabled: true
-            ingressClassName: alb
+          retention: 15d
 
-            annotations:
-              alb.ingress.kubernetes.io/group.name: platform
-              alb.ingress.kubernetes.io/scheme: internet-facing
-              alb.ingress.kubernetes.io/target-type: ip
-              alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
-              alb.ingress.kubernetes.io/ssl-redirect: "443"
-              alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:719572784863:certificate/009b30bf-e069-454a-8bb1-bf823cfb1b99
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
 
-            hosts:
-              - prometheus.rk-labs.xyz
+            limits:
+              cpu: 1000m
+              memory: 2Gi
 
   destination:
     server: https://kubernetes.default.svc
@@ -42,3 +48,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

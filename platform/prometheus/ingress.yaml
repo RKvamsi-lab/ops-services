@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 
 metadata:
-  name: prometheus-server
+  name: prometheus
   namespace: monitoring
 
   annotations:
@@ -11,7 +11,10 @@ metadata:
     alb.ingress.kubernetes.io/group.name: platform
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+
+    alb.ingress.kubernetes.io/listen-ports: >
+      [{"HTTP":80},{"HTTPS":443}]
+
     alb.ingress.kubernetes.io/ssl-redirect: "443"
 
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:719572784863:certificate/009b30bf-e069-454a-8bb1-bf823cfb1b99
@@ -23,12 +26,15 @@ spec:
 
   rules:
     - host: prometheus.rk-labs.xyz
+
       http:
         paths:
           - path: /
             pathType: Prefix
+
             backend:
               service:
                 name: prometheus-server
+
                 port:
                   number: 80

@@ -6,11 +6,16 @@ metadata:
 
 spec:
 
-  template:
+  disruption:
 
-    metadata:
-      labels:
-        workload: apps
+    consolidationPolicy: WhenEmptyOrUnderutilized
+
+    consolidateAfter: 30s
+
+  limits:
+    cpu: 100
+
+  template:
 
     spec:
 
@@ -31,22 +36,22 @@ spec:
           values:
             - linux
 
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values:
+            - c
+            - m
+            - r
+
+        - key: karpenter.k8s.aws/instance-generation
+          operator: Gt
+          values:
+            - "5"
+
         - key: karpenter.sh/capacity-type
           operator: In
           values:
             - spot
             - on-demand
 
-        - key: node.kubernetes.io/instance-type
-          operator: In
-          values:
-            - t3.medium
-            - t3.large
-            - t3.xlarge
-
-  limits:
-    cpu: "100"
-
-  disruption:
-    consolidationPolicy: WhenEmptyOrUnderutilized
-    consolidateAfter: 30s
+      expireAfter: 720h

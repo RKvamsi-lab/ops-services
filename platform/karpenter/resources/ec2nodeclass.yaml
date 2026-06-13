@@ -5,21 +5,18 @@ metadata:
   name: default
 
 spec:
+
   amiFamily: AL2023
 
-  amiSelectorTerms:
-    - alias: al2023@latest
-
-  role: dev-eks-node-role
+  role: KarpenterNodeRole-rk-labs-eks
 
   subnetSelectorTerms:
     - tags:
-        karpenter.sh/discovery: dev-eks
+        karpenter.sh/discovery: rk-labs-eks
 
   securityGroupSelectorTerms:
     - tags:
-        karpenter.sh/discovery: dev-eks
+        karpenter.sh/discovery: rk-labs-eks
 
   tags:
-    Environment: dev
-    ManagedBy: Karpenter
+    karpenter.sh/discovery: rk-labs-eks

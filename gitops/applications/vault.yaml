@@ -9,9 +9,39 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/RKvamsi-lab/ops-services.git
-    targetRevision: main
-    path: platform/vault
+    repoURL: https://helm.releases.hashicorp.com
+    chart: vault
+    targetRevision: 0.30.0
+
+    helm:
+      values: |
+        server:
+          enabled: true
+
+          replicas: 1
+
+          standalone:
+            enabled: true
+
+          dataStorage:
+            enabled: true
+            storageClass: gp3
+            size: 20Gi
+
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+
+        ui:
+          enabled: true
+
+        injector:
+          enabled: true
 
   destination:
     server: https://kubernetes.default.svc
@@ -21,3 +51,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

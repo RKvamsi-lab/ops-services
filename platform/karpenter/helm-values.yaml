@@ -1,0 +1,16 @@
+serviceAccount:
+  create: true
+  name: karpenter
+
+settings:
+  clusterName: rk-labs-eks
+
+controller:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+
+    limits:
+      cpu: 2000m
+      memory: 2Gi

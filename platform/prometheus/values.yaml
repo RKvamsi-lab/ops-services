@@ -1,0 +1,33 @@
+alertmanager:
+  enabled: true
+
+  persistence:
+    enabled: true
+    storageClass: gp3
+    size: 5Gi
+
+server:
+  persistentVolume:
+    enabled: true
+    storageClass: gp3
+    size: 20Gi
+
+  retention: 15d
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+
+kubeStateMetrics:
+  enabled: true
+
+nodeExporter:
+  enabled: true
+
+pushgateway:
+  enabled: true

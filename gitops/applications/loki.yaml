@@ -9,9 +9,37 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/RKvamsi-lab/ops-services.git
-    targetRevision: main
-    path: platform/loki
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki
+    targetRevision: 6.35.1
+
+    helm:
+      values: |
+        deploymentMode: SingleBinary
+
+        singleBinary:
+          replicas: 1
+
+        loki:
+          auth_enabled: false
+
+          commonConfig:
+            replication_factor: 1
+
+          storage:
+            type: filesystem
+
+        persistence:
+          enabled: true
+          storageClass: gp3
+          size: 20Gi
+
+        gateway:
+          enabled: true
+
+        monitoring:
+          serviceMonitor:
+            enabled: true
 
   destination:
     server: https://kubernetes.default.svc
@@ -21,3 +49,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

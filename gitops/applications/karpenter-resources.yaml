@@ -5,10 +5,8 @@ metadata:
   name: karpenter-resources
   namespace: argocd
 
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-
 spec:
+
   project: default
 
   source:
@@ -18,7 +16,6 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: karpenter
 
   syncPolicy:
     automated:

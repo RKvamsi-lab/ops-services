@@ -15,6 +15,9 @@ spec:
 
     helm:
       values: |
+        credentials:
+          useSecret: false
+
         configuration:
           backupStorageLocation:
             - name: default
@@ -43,15 +46,12 @@ spec:
 
         deployNodeAgent: true
 
-        credentials:
-          useSecret: false
-
         serviceAccount:
-          create: true
-          name: velero
+          server:
+            create: true
 
-          annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/rk-labs-velero
+            annotations:
+              eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/rk-labs-velero
 
   destination:
     server: https://kubernetes.default.svc

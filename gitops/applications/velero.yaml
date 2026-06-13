@@ -15,8 +15,8 @@ spec:
 
     helm:
       values: |
-        credentials:
-          useSecret: false
+        image:
+          repository: velero/velero
 
         configuration:
           backupStorageLocation:
@@ -42,13 +42,18 @@ spec:
               - mountPath: /target
                 name: plugins
 
+        deployNodeAgent: true
+
         snapshotsEnabled: true
 
-        deployNodeAgent: true
+        credentials:
+          useSecret: false
+          existingSecret: ""
 
         serviceAccount:
           server:
             create: true
+            name: velero
 
             annotations:
               eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/rk-labs-velero

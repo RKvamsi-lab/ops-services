@@ -13,3 +13,7 @@ resources:
 
 serviceAccount:
   create: true
+  name: external-secrets
+
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/rk-labs-external-secrets

@@ -1,29 +1,22 @@
 configuration:
 
   backupStorageLocation:
-
     - name: default
-
       provider: aws
-
       bucket: rk-labs-velero-backups
 
       config:
         region: us-east-1
 
   volumeSnapshotLocation:
-
     - name: default
-
       provider: aws
 
       config:
         region: us-east-1
 
 initContainers:
-
   - name: velero-plugin-for-aws
-
     image: velero/velero-plugin-for-aws:v1.10.1
 
     volumeMounts:
@@ -35,7 +28,6 @@ snapshotsEnabled: true
 deployNodeAgent: true
 
 resources:
-
   requests:
     cpu: 100m
     memory: 128Mi
@@ -43,3 +35,11 @@ resources:
   limits:
     cpu: 500m
     memory: 512Mi
+
+serviceAccount:
+  server:
+    create: true
+    name: velero
+
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/rk-labs-velero

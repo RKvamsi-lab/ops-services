@@ -13,7 +13,7 @@ spec:
 
     chart: velero
 
-    targetRevision: 10.1.0
+    targetRevision: 8.5.0
 
     helm:
       values: |

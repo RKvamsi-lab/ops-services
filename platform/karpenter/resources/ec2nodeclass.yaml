@@ -17,8 +17,12 @@ spec:
         karpenter.sh/discovery: dev-eks
 
   securityGroupSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: dev-eks
+
+    # Node SG
+    - id: sg-024b98e4d3059b63a
+
+    # EKS Cluster SG
+    - id: sg-0d6cc236e13f23f69
 
   tags:
     karpenter.sh/discovery: dev-eks

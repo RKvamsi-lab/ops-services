@@ -2,22 +2,25 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 
 metadata:
-  name: karpenter-resources
+  name: prometheus-resources
   namespace: argocd
 
 spec:
-
   project: default
 
   source:
     repoURL: https://github.com/RKvamsi-lab/ops-services.git
     targetRevision: main
-    path: platform/karpenter/resources
+    path: platform/prometheus
 
   destination:
     server: https://kubernetes.default.svc
+    namespace: monitoring
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

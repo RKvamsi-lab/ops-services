@@ -25,7 +25,7 @@ spec:
         valueFiles:
           - $values/platform/prometheus/values.yaml
 
-    - repoURL: https://github.com/YOUR_GITHUB_USERNAME/ops-services.git
+    - repoURL: https://github.com/RKvamsi-lab/ops-services.git
       targetRevision: main
       ref: values
 

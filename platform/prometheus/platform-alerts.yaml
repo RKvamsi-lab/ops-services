@@ -1,0 +1,161 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: platform-alerts
+  namespace: monitoring
+
+spec:
+  groups:
+
+    - name: kubernetes.rules
+      rules:
+
+        - alert: NodeNotReady
+          expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Node Not Ready
+            description: Node {{ $labels.node }} is not ready
+
+        - alert: PodCrashLoopBackOff
+          expr: kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"} > 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Pod CrashLoopBackOff
+            description: Pod {{ $labels.namespace }}/{{ $labels.pod }} is crashing
+
+        - alert: DeploymentReplicasMismatch
+          expr: kube_deployment_status_replicas_available < kube_deployment_spec_replicas
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Deployment Replicas Mismatch
+            description: Deployment {{ $labels.namespace }}/{{ $labels.deployment }} missing replicas
+
+        - alert: HighCPUUsage
+          expr: (100 - avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: High CPU Usage
+            description: CPU usage above 80%
+
+        - alert: HighMemoryUsage
+          expr: ((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100 > 85
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: High Memory Usage
+            description: Memory usage above 85%
+
+        - alert: PVCUsageHigh
+          expr: (kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes) * 100 > 80
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: PVC Usage High
+            description: PVC usage above 80%
+
+    - name: platform.rules
+      rules:
+
+        - alert: GrafanaDown
+          expr: kube_deployment_status_replicas_available{deployment="grafana"} < 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Grafana Down
+            description: Grafana deployment unavailable
+
+        - alert: JenkinsDown
+          expr: kube_deployment_status_replicas_available{deployment="jenkins"} < 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Jenkins Down
+            description: Jenkins deployment unavailable
+
+        - alert: SonarQubeDown
+          expr: kube_deployment_status_replicas_available{deployment="sonarqube"} < 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: SonarQube Down
+            description: SonarQube deployment unavailable
+
+        - alert: VaultDown
+          expr: kube_statefulset_status_replicas_ready{statefulset="vault"} < 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Vault Down
+            description: Vault unavailable
+
+    - name: applications.rules
+      rules:
+
+        - alert: BackendAPIDown
+          expr: kube_deployment_status_replicas_available{deployment="backend-api"} < 1
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Backend API Down
+            description: Backend API unavailable
+
+        - alert: FrontendDown
+          expr: kube_deployment_status_replicas_available{deployment="frontend-ui"} < 1
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Frontend Down
+            description: Frontend unavailable
+
+    - name: ingress.rules
+      rules:
+
+        - alert: NginxIngress5xx
+          expr: rate(nginx_ingress_controller_requests{status=~"5.."}[5m]) > 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: High NGINX 5xx Errors
+            description: NGINX ingress returning 5xx errors
+
+    - name: argocd.rules
+      rules:
+
+        - alert: ArgoCDOutOfSync
+          expr: argocd_app_info{sync_status!="Synced"} > 0
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: ArgoCD Application OutOfSync
+            description: Application {{ $labels.name }} is OutOfSync
+
+    - name: blackbox.rules
+      rules:
+
+        - alert: ExternalEndpointDown
+          expr: probe_success == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Endpoint Down
+            description: "{{ $labels.instance }} is unreachable"

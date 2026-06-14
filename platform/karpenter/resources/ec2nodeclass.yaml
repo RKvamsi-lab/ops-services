@@ -10,15 +10,15 @@ spec:
   amiSelectorTerms:
     - alias: al2023@latest
 
-  role: KarpenterNodeRole-rk-labs-eks
+role: KarpenterNodeRole-rk-labs-eks
 
-  subnetSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: rk-labs-eks
+subnetSelectorTerms:
+  - tags:
+      karpenter.sh/discovery: dev-eks
 
-  securityGroupSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: rk-labs-eks
+securityGroupSelectorTerms:
+  - tags:
+      karpenter.sh/discovery: dev-eks
 
-  tags:
-    karpenter.sh/discovery: rk-labs-eks
+tags:
+  karpenter.sh/discovery: dev-eks

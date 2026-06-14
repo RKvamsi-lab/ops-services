@@ -29,6 +29,12 @@ spec:
         write:
           replicas: 0
 
+        chunksCache:
+          enabled: false
+
+        resultsCache:
+          enabled: false
+
         loki:
           auth_enabled: false
 

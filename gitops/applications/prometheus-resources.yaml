@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/RKvamsi-lab/ops-services.git
     targetRevision: main
-    ref: values
+    path: platform/prometheus
 
   destination:
     server: https://kubernetes.default.svc
@@ -21,3 +21,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

@@ -18,6 +18,12 @@ spec:
         alertmanager:
           enabled: true
 
+          extraSecretMounts:
+          - name: alertmanager-slack
+            secretName: alertmanager-slack
+            mountPath: /etc/alertmanager/secrets/alertmanager-slack
+            readOnly: true
+
           persistence:
             enabled: true
             storageClass: gp3

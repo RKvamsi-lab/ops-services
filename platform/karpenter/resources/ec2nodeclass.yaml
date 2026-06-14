@@ -12,17 +12,14 @@ spec:
 
   role: dev-eks-node-role
 
-  subnetSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: dev-eks
-
   securityGroupSelectorTerms:
-
-    # Node SG
     - id: sg-024b98e4d3059b63a
-
-    # EKS Cluster SG
     - id: sg-0d6cc236e13f23f69
+
+  subnetSelectorTerms:
+    - id: subnet-04d424b7904c39aa5
+    - id: subnet-0713d9dfcf0839d4d
+    - id: subnet-08f7b3ebfccf0c50b
 
   tags:
     karpenter.sh/discovery: dev-eks

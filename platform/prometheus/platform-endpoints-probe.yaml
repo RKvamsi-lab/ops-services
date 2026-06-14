@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+
+metadata:
+  name: platform-endpoints
+  namespace: monitoring
+
+spec:
+  interval: 30s
+
+  module: http_2xx
+
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+
+  targets:
+    staticConfig:
+      static:
+        - https://grafana.rk-labs.xyz
+        - https://jenkins.rk-labs.xyz
+        - https://sonarqube.rk-labs.xyz
+        - https://vault.rk-labs.xyz
+        - https://app.rk-labs.xyz
+        - https://api.rk-labs.xyz/health

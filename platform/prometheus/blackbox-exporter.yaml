@@ -1,24 +1,39 @@
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 
 metadata:
-  name: platform-endpoints
-  namespace: monitoring
+  name: blackbox-exporter
+  namespace: argocd
 
 spec:
-  interval: 30s
+  project: default
 
-  module: http_2xx
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus-blackbox-exporter
+    targetRevision: 9.0.0
 
-  prober:
-    url: blackbox-exporter.monitoring.svc.cluster.local:9115
+    helm:
+      values: |
+        service:
+          port: 9115
 
-  targets:
-    staticConfig:
-      static:
-        - https://grafana.rk-labs.xyz
-        - https://jenkins.rk-labs.xyz
-        - https://sonarqube.rk-labs.xyz
-        - https://vault.rk-labs.xyz
-        - https://app.rk-labs.xyz
-        - https://api.rk-labs.xyz/health
+        config:
+          modules:
+            http_2xx:
+              prober: http
+              timeout: 10s
+              http:
+                preferred_ip_protocol: ip4
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

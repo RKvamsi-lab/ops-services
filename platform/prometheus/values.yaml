@@ -8,6 +8,8 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    probeSelectorNilUsesHelmValues: false
+    probeSelector: {}
 
     retention: 15d
 

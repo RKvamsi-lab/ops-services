@@ -9,9 +9,9 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/YOUR_GITHUB_USERNAME/ops-services.git
+    repoURL: https://github.com/RKvamsi-lab/ops-services.git
     targetRevision: main
-    path: platform/prometheus
+    ref: values
 
   destination:
     server: https://kubernetes.default.svc

@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: blackbox-config
   namespace: monitoring
+
 data:
   blackbox.yml: |
     modules:
@@ -67,28 +68,3 @@ spec:
     - name: http
       port: 9115
       targetPort: 9115
-
----
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
-  name: external-endpoints
-  namespace: monitoring
-
-spec:
-  jobName: external-endpoints
-
-  prober:
-    url: blackbox-exporter.monitoring.svc.cluster.local:9115
-
-  module: http_2xx
-
-  targets:
-    staticConfig:
-      static:
-        - https://grafana.rk-labs.xyz
-        - https://jenkins.rk-labs.xyz
-        - https://sonarqube.rk-labs.xyz
-        - https://vault.rk-labs.xyz
-        - https://app.rk-labs.xyz
-        - https://api.rk-labs.xyz/health

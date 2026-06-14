@@ -3,6 +3,41 @@ server:
 
   replicas: 1
 
+  serviceAccount:
+    create: true
+
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/dev-vault-irsa
+
+  extraEnvironmentVars:
+    AWS_REGION: us-east-1
+
+  standalone:
+    enabled: true
+
+    config: |
+      ui = true
+
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+
+      storage "file" {
+        path = "/vault/data"
+      }
+
+      seal "awskms" {
+        region     = "us-east-1"
+        kms_key_id = "53267b27-93d7-4ea3-b187-85291ffecb4d"
+      }
+
+  dataStorage:
+    enabled: true
+    storageClass: gp3
+    size: 20Gi
+
   resources:
     requests:
       cpu: 250m
@@ -11,16 +46,6 @@ server:
     limits:
       cpu: 1000m
       memory: 2Gi
-
-  dataStorage:
-    enabled: true
-
-    storageClass: gp3
-
-    size: 20Gi
-
-  standalone:
-    enabled: true
 
 ui:
   enabled: true

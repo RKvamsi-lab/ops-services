@@ -19,10 +19,10 @@ spec:
           enabled: true
 
           extraSecretMounts:
-          - name: alertmanager-slack
-            secretName: alertmanager-slack
-            mountPath: /etc/alertmanager/secrets/alertmanager-slack
-            readOnly: true
+            - name: alertmanager-slack
+              secretName: alertmanager-slack
+              mountPath: /etc/alertmanager/secrets/alertmanager-slack
+              readOnly: true
 
           persistence:
             enabled: true
@@ -69,6 +69,37 @@ spec:
             limits:
               cpu: 1000m
               memory: 2Gi
+
+        serverFiles:
+          prometheus.yml:
+            scrape_configs:
+
+              - job_name: blackbox
+
+                metrics_path: /probe
+
+                params:
+                  module:
+                    - http_2xx
+
+                static_configs:
+                  - targets:
+                      - https://grafana.rk-labs.xyz
+                      - https://jenkins.rk-labs.xyz
+                      - https://sonarqube.rk-labs.xyz
+                      - https://vault.rk-labs.xyz
+                      - https://app.rk-labs.xyz
+                      - https://api.rk-labs.xyz/health
+
+                relabel_configs:
+                  - source_labels: [__address__]
+                    target_label: __param_target
+
+                  - source_labels: [__param_target]
+                    target_label: instance
+
+                  - target_label: __address__
+                    replacement: blackbox-exporter.monitoring.svc.cluster.local:9115
 
   destination:
     server: https://kubernetes.default.svc

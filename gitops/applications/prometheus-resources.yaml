@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/RKvamsi-lab/ops-services.git
+    repoURL: https://github.com/YOUR_GITHUB_USERNAME/ops-services.git
     targetRevision: main
     path: platform/prometheus
 
@@ -21,6 +21,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
-    syncOptions:
-      - CreateNamespace=true

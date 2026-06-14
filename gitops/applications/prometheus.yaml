@@ -10,96 +10,24 @@ spec:
 
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
-    chart: prometheus
-    targetRevision: 27.23.0
+    chart: kube-prometheus-stack
+    targetRevision: 72.8.0
 
     helm:
-      values: |
-        alertmanager:
-          enabled: true
+      valueFiles:
+        - $values/platform/prometheus/values.yaml
 
-          extraSecretMounts:
-            - name: alertmanager-slack
-              secretName: alertmanager-slack
-              mountPath: /etc/alertmanager/secrets/alertmanager-slack
-              readOnly: true
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 72.8.0
+      helm:
+        valueFiles:
+          - $values/platform/prometheus/values.yaml
 
-          persistence:
-            enabled: true
-            storageClass: gp3
-            size: 5Gi
-
-          config:
-            global:
-              resolve_timeout: 5m
-
-            route:
-              receiver: slack-notifications
-              group_by:
-                - alertname
-              group_wait: 30s
-              group_interval: 5m
-              repeat_interval: 4h
-
-            receivers:
-              - name: slack-notifications
-                slack_configs:
-                  - api_url_file: /etc/alertmanager/secrets/alertmanager-slack/webhook-url
-                    channel: "#ops-app-alerts"
-                    send_resolved: true
-                    title: "{{ .CommonAnnotations.summary }}"
-                    text: |
-                      *Alert:* {{ .CommonLabels.alertname }}
-                      *Severity:* {{ .CommonLabels.severity }}
-                      *Description:* {{ .CommonAnnotations.description }}
-
-        server:
-          persistentVolume:
-            enabled: true
-            storageClass: gp3
-            size: 20Gi
-
-          retention: 15d
-
-          resources:
-            requests:
-              cpu: 250m
-              memory: 512Mi
-
-            limits:
-              cpu: 1000m
-              memory: 2Gi
-
-        serverFiles:
-          prometheus.yml:
-            scrape_configs:
-
-              - job_name: blackbox
-
-                metrics_path: /probe
-
-                params:
-                  module:
-                    - http_2xx
-
-                static_configs:
-                  - targets:
-                      - https://grafana.rk-labs.xyz
-                      - https://jenkins.rk-labs.xyz
-                      - https://sonarqube.rk-labs.xyz
-                      - https://vault.rk-labs.xyz
-                      - https://app.rk-labs.xyz
-                      - https://api.rk-labs.xyz/health
-
-                relabel_configs:
-                  - source_labels: [__address__]
-                    target_label: __param_target
-
-                  - source_labels: [__param_target]
-                    target_label: instance
-
-                  - target_label: __address__
-                    replacement: blackbox-exporter.monitoring.svc.cluster.local:9115
+    - repoURL: https://github.com/YOUR_GITHUB_USERNAME/ops-services.git
+      targetRevision: main
+      ref: values
 
   destination:
     server: https://kubernetes.default.svc

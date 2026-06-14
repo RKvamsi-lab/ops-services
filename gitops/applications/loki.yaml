@@ -2,72 +2,72 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 
 metadata:
-name: loki
-namespace: argocd
+  name: loki
+  namespace: argocd
 
 spec:
-project: default
+  project: default
 
-source:
-repoURL: https://grafana.github.io/helm-charts
-chart: loki
-targetRevision: 6.35.1
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki
+    targetRevision: 6.35.1
 
-helm:
-  values: |
-    deploymentMode: SingleBinary
+    helm:
+      values: |
+        deploymentMode: SingleBinary
 
-    singleBinary:
-      replicas: 1
+        singleBinary:
+          replicas: 1
 
-    backend:
-      replicas: 0
+        backend:
+          replicas: 0
 
-    read:
-      replicas: 0
+        read:
+          replicas: 0
 
-    write:
-      replicas: 0
+        write:
+          replicas: 0
 
-    loki:
-      auth_enabled: false
+        loki:
+          auth_enabled: false
 
-      commonConfig:
-        replication_factor: 1
+          commonConfig:
+            replication_factor: 1
 
-      schemaConfig:
-        configs:
-          - from: "2024-01-01"
-            store: tsdb
-            object_store: filesystem
-            schema: v13
-            index:
-              prefix: loki_index_
-              period: 24h
+          schemaConfig:
+            configs:
+              - from: "2024-01-01"
+                store: tsdb
+                object_store: filesystem
+                schema: v13
+                index:
+                  prefix: loki_index_
+                  period: 24h
 
-      storage:
-        type: filesystem
+          storage:
+            type: filesystem
 
-    persistence:
-      enabled: true
-      storageClass: gp3
-      size: 20Gi
+        persistence:
+          enabled: true
+          storageClass: gp3
+          size: 20Gi
 
-    gateway:
-      enabled: false
+        gateway:
+          enabled: false
 
-    monitoring:
-      serviceMonitor:
-        enabled: true
+        monitoring:
+          serviceMonitor:
+            enabled: true
 
-destination:
-server: https://kubernetes.default.svc
-namespace: loki
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: loki
 
-syncPolicy:
-automated:
-prune: true
-selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 
-syncOptions:
-  - CreateNamespace=true
+    syncOptions:
+      - CreateNamespace=true

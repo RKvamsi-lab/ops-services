@@ -14,11 +14,17 @@ spec:
     chart: karpenter
     targetRevision: 1.3.3
 
-    helm:
-      values: |
-        serviceAccount:
-          create: true
-          name: karpenter
+helm:
+  values: |
+    serviceAccount:
+      create: true
+      name: karpenter
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/karpenter-controller-role
+
+    settings:
+      clusterName: dev-eks
+      clusterEndpoint: https://CE67A46B906F0842C513E709193ABB2B.gr7.us-east-1.eks.amazonaws.com
 
   destination:
     server: https://kubernetes.default.svc

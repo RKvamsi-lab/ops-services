@@ -7,3 +7,4 @@ resources:
   - jenkins-secret.yaml
   - sonarqube-secret.yaml
   - slack-webhook-secret.yaml
+  - cluster-ssm-store.yaml

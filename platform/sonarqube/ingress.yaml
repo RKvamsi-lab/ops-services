@@ -26,15 +26,12 @@ spec:
 
   rules:
     - host: sonarqube.rk-labs.xyz
-
       http:
         paths:
           - path: /
             pathType: Prefix
-
             backend:
               service:
                 name: sonarqube
-
                 port:
                   number: 9000

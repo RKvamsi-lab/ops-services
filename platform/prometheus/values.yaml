@@ -65,6 +65,25 @@ kubeStateMetrics:
 defaultRules:
   create: true
 
-  disabled:
-    KubeSchedulerDown: true
-    KubeControllerManagerDown: true
+  rules:
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
+    kubeControllerManager: false
+
+kubeScheduler:
+  enabled: false
+
+  service:
+    enabled: false
+
+  serviceMonitor:
+    enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+  service:
+    enabled: false
+
+  serviceMonitor:
+    enabled: false

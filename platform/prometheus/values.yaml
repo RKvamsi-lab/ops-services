@@ -64,3 +64,7 @@ kubeStateMetrics:
 
 defaultRules:
   create: true
+
+  disabled:
+    KubeSchedulerDown: true
+    KubeControllerManagerDown: true

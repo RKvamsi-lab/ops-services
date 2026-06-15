@@ -18,3 +18,5 @@ resources:
   - vault.yaml
   - velero.yaml
   - whoami.yaml
+  - external-secrets.yaml
+  - external-secrets-resources.yaml

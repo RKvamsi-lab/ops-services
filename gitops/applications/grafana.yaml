@@ -9,17 +9,17 @@ spec:
   project: default
 
   sources:
-    - repoURL: https://grafana.github.io/helm-charts
-      chart: grafana
-      targetRevision: 9.2.10
+  - repoURL: https://grafana.github.io/helm-charts
+    chart: grafana
+    targetRevision: 9.2.10
 
-      helm:
-        valueFiles:
-          - $values/platform/grafana/values.yaml
+    helm:
+      valueFiles:
+        - $values/platform/grafana/values.yaml
 
-    - repoURL: https://github.com/kvamsikrishna/ops-services.git
-      targetRevision: main
-      ref: values
+  - repoURL: https://github.com/RKvamsi-lab/ops-services.git
+    targetRevision: main
+    ref: values
 
   destination:
     server: https://kubernetes.default.svc

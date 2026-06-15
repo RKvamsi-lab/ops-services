@@ -1,11 +1,9 @@
 server:
   enabled: true
-
   replicas: 1
 
   serviceAccount:
     create: true
-
     annotations:
       eks.amazonaws.com/role-arn: arn:aws:iam::719572784863:role/dev-vault-irsa
 
@@ -14,7 +12,6 @@ server:
 
   standalone:
     enabled: true
-
     config: |
       ui = true
 
@@ -42,10 +39,26 @@ server:
     requests:
       cpu: 250m
       memory: 512Mi
-
     limits:
       cpu: 1000m
       memory: 2Gi
+
+  ingress:
+    enabled: true
+    ingressClassName: alb
+
+    hosts:
+      - host: vault.rk-labs.xyz
+
+    annotations:
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/group.name: platform
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+      alb.ingress.kubernetes.io/ssl-redirect: "443"
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:719572784863:certificate/009b30bf-e069-454a-8bb1-bf823cfb1b99
+      external-dns.alpha.kubernetes.io/hostname: vault.rk-labs.xyz
 
 ui:
   enabled: true

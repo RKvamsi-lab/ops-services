@@ -8,20 +8,18 @@ metadata:
 spec:
   project: default
 
-  source:
-    repoURL: https://grafana.github.io/helm-charts
-    chart: grafana
-    targetRevision: 9.2.10
+  sources:
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: grafana
+      targetRevision: 9.2.10
 
-    helm:
-      valueFiles: []
+      helm:
+        valueFiles:
+          - $values/platform/grafana/values.yaml
 
-      values: |
-        adminUser: admin
-
-        persistence:
-          enabled: true
-          size: 10Gi
+    - repoURL: https://github.com/kvamsikrishna/ops-services.git
+      targetRevision: main
+      ref: values
 
   destination:
     server: https://kubernetes.default.svc

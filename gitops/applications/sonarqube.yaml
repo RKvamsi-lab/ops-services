@@ -8,31 +8,18 @@ metadata:
 spec:
   project: default
 
-  source:
-    repoURL: https://SonarSource.github.io/helm-chart-sonarqube
-    chart: sonarqube
-    targetRevision: 2026.1.0
+  sources:
+    - repoURL: https://SonarSource.github.io/helm-chart-sonarqube
+      chart: sonarqube
+      targetRevision: 2026.1.0
 
-    helm:
-      values: |
-        community:
-          enabled: true
+      helm:
+        valueFiles:
+          - $values/platform/sonarqube/values.yaml
 
-        monitoringPasscode: "SonarQubeMonitor123"
-
-        persistence:
-          enabled: true
-          storageClass: gp3
-          size: 20Gi
-
-        resources:
-          requests:
-            cpu: 500m
-            memory: 2Gi
-
-          limits:
-            cpu: 2000m
-            memory: 4Gi
+    - repoURL: https://github.com/kvamsikrishna/ops-services.git
+      targetRevision: main
+      ref: values
 
   destination:
     server: https://kubernetes.default.svc

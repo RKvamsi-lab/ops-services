@@ -1,9 +1,6 @@
 controller:
-
   admin:
-
     createSecret: true
-
     username: admin
 
   serviceType: ClusterIP
@@ -18,35 +15,40 @@ controller:
     - blueocean
 
   persistence:
-
     enabled: true
-
     storageClass: gp3
-
     size: 30Gi
 
   resources:
-
     requests:
       cpu: 500m
       memory: 1Gi
-
     limits:
       cpu: 2000m
       memory: 4Gi
 
   ingress:
-    enabled: false
+    enabled: true
+    ingressClassName: alb
+    hostName: jenkins.rk-labs.xyz
+
+    annotations:
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/group.name: platform
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+      alb.ingress.kubernetes.io/ssl-redirect: "443"
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:719572784863:certificate/009b30bf-e069-454a-8bb1-bf823cfb1b99
+      external-dns.alpha.kubernetes.io/hostname: jenkins.rk-labs.xyz
 
 agent:
   enabled: true
 
   resources:
-
     requests:
       cpu: 250m
       memory: 512Mi
-
     limits:
       cpu: 1000m
       memory: 2Gi

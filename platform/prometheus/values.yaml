@@ -4,6 +4,9 @@ crds:
 grafana:
   enabled: true
 
+  deploymentStrategy:
+    type: Recreate
+
   persistence:
     enabled: true
     storageClassName: gp3

@@ -8,8 +8,9 @@ persistence:
   storageClassName: gp3
   size: 10Gi
 
-deploymentStrategy:
-  type: Recreate
+grafana:
+  strategy:
+    type: Recreate
 
 service:
   type: ClusterIP

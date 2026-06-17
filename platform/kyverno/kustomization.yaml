@@ -1,0 +1,6 @@
+resources:
+  - namespace.yaml
+  - policies/disallow-latest-tag.yaml
+  - policies/require-limits.yaml
+  - policies/require-probes.yaml
+  - policies/disallow-privileged.yaml

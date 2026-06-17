@@ -1,0 +1,4 @@
+resources:
+  - default-deny.yaml
+  - frontend-policy.yaml
+  - backend-policy.yaml

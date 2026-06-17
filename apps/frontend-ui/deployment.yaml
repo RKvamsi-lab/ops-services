@@ -1,54 +1,36 @@
-apiVersion: apps/v1
-kind: Deployment
+# frontend-ui Application
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 
 metadata:
   name: frontend-ui
+  namespace: argocd
+
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: frontend-ui=719572784863.dkr.ecr.us-east-1.amazonaws.com/frontend-ui
+    argocd-image-updater.argoproj.io/frontend-ui.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/frontend-ui.allow-tags: regexp:^[a-f0-9]{40}$
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/write-back-target: kustomization
 
 spec:
-  replicas: 2
+  project: default
 
-  selector:
-    matchLabels:
-      app: frontend-ui
+  source:
+    repoURL: https://github.com/RKvamsi-lab/ops-services.git
+    targetRevision: main
+    path: apps/frontend-ui
 
-  template:
-    metadata:
-      labels:
-        app: frontend-ui
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: frontend-ui
 
-    spec:
-      containers:
-        - name: frontend-ui
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 
-          image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/frontend-ui:216abc3f9471fa6383bafe9fbc6fd32afc9a35c8
-          imagePullPolicy: Always
-
-          securityContext:
-            privileged: false
-
-          ports:
-            - containerPort: 80
-
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "300m"
-              memory: "256Mi"
-
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 5
-
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 20
-            periodSeconds: 20
-            timeoutSeconds: 5
+    syncOptions:
+      - CreateNamespace=true

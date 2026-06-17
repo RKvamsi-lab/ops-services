@@ -1,6 +1,10 @@
 community:
   enabled: true
 
+account:
+  adminPasswordSecretName: sonarqube-admin-secret
+  existingSecretKey: admin-password
+
 monitoringPasscode: "SonarQubeMonitor123"
 
 persistence:

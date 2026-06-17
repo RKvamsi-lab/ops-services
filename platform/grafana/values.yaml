@@ -1,16 +1,21 @@
-admin:
-  existingSecret: grafana-admin-secret
-  userKey: admin-user
-  passwordKey: admin-password
-
-persistence:
-  enabled: true
-  storageClassName: gp3
-  size: 10Gi
+replicas: 1
 
 grafana:
   strategy:
     type: Recreate
+
+persistence:
+  enabled: true
+  type: pvc
+  storageClassName: gp3
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+admin:
+  existingSecret: grafana-admin-secret
+  userKey: admin-user
+  passwordKey: admin-password
 
 service:
   type: ClusterIP

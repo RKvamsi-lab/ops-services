@@ -17,5 +17,4 @@ resources:
   - whoami.yaml
   - external-secrets-resources.yaml
   - kyverno.yaml
-  - network-policies.yaml
   - pod-security.yaml

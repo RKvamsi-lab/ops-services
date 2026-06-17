@@ -20,7 +20,7 @@ spec:
       containers:
         - name: frontend-ui
 
-          image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/frontend-ui:v1
+          image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/frontend-ui:216abc3f9471fa6383bafe9fbc6fd32afc9a35c8
           imagePullPolicy: Always
 
           securityContext:

@@ -1,8 +1,7 @@
 replicas: 1
 
-grafana:
-  strategy:
-    type: Recreate
+strategy:
+  type: Recreate
 
 persistence:
   enabled: true

@@ -23,9 +23,6 @@ spec:
           image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/backend-api:978415faa5c89b3b513d0343250ecb2232cbb5a3
           imagePullPolicy: Always
 
-          securityContext:
-            privileged: false
-
           env:
             - name: NODE_ENV
               value: "production"
@@ -52,10 +49,11 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /api/health
+              path: /api/healthz
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 5
 
           livenessProbe:
             httpGet:
@@ -63,3 +61,4 @@ spec:
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 20
+            timeoutSeconds: 5

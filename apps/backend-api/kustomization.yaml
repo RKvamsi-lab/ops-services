@@ -7,4 +7,4 @@ resources:
   - external-secret.yaml
 images:
   - name: 719572784863.dkr.ecr.us-east-1.amazonaws.com/backend-api
-    newTag: latest
+    newTag: 978415faa5c89b3b513d0343250ecb2232cbb5a3

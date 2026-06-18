@@ -7,8 +7,11 @@ metadata:
 
   annotations:
     argocd-image-updater.argoproj.io/image-list: frontend-ui=719572784863.dkr.ecr.us-east-1.amazonaws.com/frontend-ui
-    argocd-image-updater.argoproj.io/backend-api.update-strategy: newest-build
-    argocd-image-updater.argoproj.io/backend-api.allow-tags: regexp:^[a-f0-9]{40}$
+
+    argocd-image-updater.argoproj.io/frontend-ui.update-strategy: newest-build
+
+    argocd-image-updater.argoproj.io/frontend-ui.allow-tags: regexp:^[a-f0-9]{40}$
+
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/git-branch: main
     argocd-image-updater.argoproj.io/write-back-target: kustomization

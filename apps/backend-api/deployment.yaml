@@ -20,21 +20,24 @@ spec:
     spec:
       containers:
         - name: backend-api
-          image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/backend-api:216abc3f9471fa6383bafe9fbc6fd32afc9a35c8
+          image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/backend-api:978415faa5c89b3b513d0343250ecb2232cbb5a3
           imagePullPolicy: Always
 
           securityContext:
             privileged: false
 
           env:
+            - name: NODE_ENV
+              value: "production"
+
+            - name: PORT
+              value: "8080"
+
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: backend-api-secret
                   key: DATABASE_URL
-
-            - name: PORT
-              value: "8080"
 
           ports:
             - containerPort: 8080
@@ -49,16 +52,14 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /health
+              path: /api/health
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
-            timeoutSeconds: 5
 
           livenessProbe:
             httpGet:
-              path: /health
+              path: /api/healthz
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 20
-            timeoutSeconds: 5

@@ -13,8 +13,10 @@ metadata:
     argocd-image-updater.argoproj.io/frontend-ui.allow-tags: regexp:^[a-f0-9]{40}$
 
     argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/git-branch: main
+
     argocd-image-updater.argoproj.io/write-back-target: kustomization
+
+    argocd-image-updater.argoproj.io/git-branch: main
 
 spec:
   project: default

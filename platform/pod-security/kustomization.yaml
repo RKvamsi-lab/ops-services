@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - frontend-ui-namespace.yaml
   - backend-api-namespace.yaml
-  - whoami-namespace.yaml

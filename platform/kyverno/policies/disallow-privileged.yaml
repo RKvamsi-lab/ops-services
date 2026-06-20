@@ -18,19 +18,19 @@ spec:
 
       exclude:
         any:
-        - resources:
-            namespaces:
-            - kube-system
-            - argocd
-            - monitoring
-            - jenkins
-            - sonarqube
-            - vault
-            - velero
-            - external-secrets
-            - karpenter
-            - loki
-            - kyverno
+          - resources:
+              namespaces:
+                - kube-system
+                - argocd
+                - monitoring
+                - jenkins
+                - sonarqube
+                - vault
+                - velero
+                - external-secrets
+                - karpenter
+                - loki
+                - kyverno
 
       validate:
         message: "privileged containers not allowed"
@@ -38,5 +38,5 @@ spec:
         pattern:
           spec:
             containers:
-              - securityContext:
-                  privileged: false
+              - =(securityContext):
+                  =(privileged): "false"

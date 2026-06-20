@@ -23,9 +23,6 @@ spec:
           image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/frontend-ui:216abc3f9471fa6383bafe9fbc6fd32afc9a35c8
           imagePullPolicy: Always
 
-          securityContext:
-            privileged: false
-
           ports:
             - containerPort: 80
 

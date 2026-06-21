@@ -18,3 +18,4 @@ resources:
   - external-secrets-resources.yaml
   - kyverno.yaml
   - pod-security.yaml
+  - job-bot.yaml

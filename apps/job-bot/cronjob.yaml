@@ -23,7 +23,7 @@ spec:
           containers:
             - name: job-bot
 
-              image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/job-bot:abc1234-amd64
+              image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/job-bot:vamsi-amd64
 
               imagePullPolicy: Always
 

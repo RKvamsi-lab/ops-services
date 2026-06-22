@@ -6,39 +6,32 @@ metadata:
   namespace: job-bot
 
 spec:
-
   schedule: "0 * * * *"
 
   successfulJobsHistoryLimit: 3
+
   failedJobsHistoryLimit: 3
 
   jobTemplate:
-
     spec:
-
       template:
-
         spec:
-
           serviceAccountName: job-bot
 
           restartPolicy: Never
 
           containers:
-
             - name: job-bot
 
-              image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/job-bot:39b0d0a0a06c8f560190293fd066febec78e49ce
+              image: 719572784863.dkr.ecr.us-east-1.amazonaws.com/job-bot:latest
 
               imagePullPolicy: Always
 
               env:
-
                 - name: AWS_REGION
                   value: us-east-1
 
               resources:
-
                 requests:
                   cpu: 250m
                   memory: 512Mi

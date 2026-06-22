@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - 719572784863.dkr.ecr.us-east-1.amazonaws.com/job-bot:latest

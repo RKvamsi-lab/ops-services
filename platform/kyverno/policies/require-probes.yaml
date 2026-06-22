@@ -6,28 +6,20 @@ metadata:
 
 spec:
   validationFailureAction: Enforce
-
   background: true
 
   rules:
-
     - name: require-readiness-liveness
 
       match:
-
         any:
-
           - resources:
-
               kinds:
                 - Pod
 
       exclude:
-
         any:
-
           - resources:
-
               namespaces:
                 - kube-system
                 - argocd
@@ -42,28 +34,23 @@ spec:
                 - kyverno
                 - job-bot
 
-      validate:
+          - resources:
+              kinds:
+                - Job
+                - CronJob
 
+      validate:
         message: "readiness and liveness probes required"
 
         pattern:
-
           spec:
-
             containers:
-
               - readinessProbe:
-
                   httpGet:
-
                     path: "?*"
-
                     port: "?*"
 
                 livenessProbe:
-
                   httpGet:
-
                     path: "?*"
-
                     port: "?*"

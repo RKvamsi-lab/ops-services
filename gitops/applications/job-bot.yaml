@@ -7,11 +7,8 @@ metadata:
 
   annotations:
     argocd-image-updater.argoproj.io/image-list: job-bot=719572784863.dkr.ecr.us-east-1.amazonaws.com/job-bot
-
-    argocd-image-updater.argoproj.io/job-bot.update-strategy: newest-build
-
     argocd-image-updater.argoproj.io/job-bot.force-update: "true"
-
+    argocd-image-updater.argoproj.io/job-bot.update-strategy: newest-build
     argocd-image-updater.argoproj.io/write-back-method: git
 
 spec:

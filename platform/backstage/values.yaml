@@ -1,0 +1,304 @@
+# -----------------------------------------------------------------------------
+# Backstage Helm Values
+# Environment: Production
+# Platform: AWS EKS
+# GitOps: ArgoCD
+#
+# SECRETS: all sensitive values are injected via a Kubernetes Secret named
+# "backstage-secrets", which is populated from AWS SSM Parameter Store by
+# External Secrets Operator (see external-secret.yaml). Nothing sensitive is
+# hardcoded here. App-config values that need a secret use ${ENV_VAR}
+# placeholders, which Backstage resolves against the container's environment
+# at startup. Those env vars are bulk-loaded from the secret via
+# extraEnvVarsSecret below.
+#
+# -----------------------------------------------------------------------------
+
+replicaCount: 2
+
+image:
+  repository: ghcr.io/backstage/backstage
+  tag: latest
+  pullPolicy: IfNotPresent
+
+fullnameOverride: backstage
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  name: backstage
+  annotations: {}
+
+service:
+  type: ClusterIP
+  port: 7007
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "7007"
+
+podLabels:
+  app.kubernetes.io/name: backstage
+  app.kubernetes.io/component: developer-portal
+  app.kubernetes.io/part-of: platform
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: "2"
+    memory: 2Gi
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podSecurityContext:
+  fsGroup: 1001
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+
+livenessProbe:
+  httpGet:
+    path: /healthcheck
+    port: 7007
+  initialDelaySeconds: 60
+  timeoutSeconds: 5
+  periodSeconds: 20
+
+readinessProbe:
+  httpGet:
+    path: /healthcheck
+    port: 7007
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+persistence:
+  enabled: false
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+topologySpreadConstraints: []
+
+priorityClassName: ""
+
+dnsPolicy: ClusterFirst
+
+runtimeClassName: ""
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 1
+
+revisionHistoryLimit: 10
+
+terminationGracePeriodSeconds: 60
+
+extraVolumes: []
+
+extraVolumeMounts: []
+
+initContainers: []
+
+sidecars: []
+
+events: {}
+
+################################################################################
+# Metrics / Monitoring
+################################################################################
+
+metrics:
+  enabled: true
+
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  interval: 30s
+  scrapeTimeout: 10s
+
+prometheusRule:
+  enabled: false
+
+################################################################################
+# Networking
+################################################################################
+
+networkPolicy:
+  enabled: false
+
+ingress:
+  enabled: false
+
+################################################################################
+# Database (chart-managed Postgres disabled — using external RDS/Postgres)
+################################################################################
+
+postgresql:
+  enabled: false
+
+################################################################################
+# Secrets wiring (SSM -> External Secrets Operator -> this Secret)
+################################################################################
+
+extraEnvVarsSecret: backstage-secrets
+
+existingSecret: ""
+
+extraEnvVarsCM: ""
+
+extraEnvVars:
+  - name: NODE_ENV
+    value: production
+  - name: LOG_LEVEL
+    value: info
+  - name: NODE_OPTIONS
+    value: --max-old-space-size=2048
+
+################################################################################
+# Chart-level backend settings (caching/scheduler, distinct from appConfig.backend)
+################################################################################
+
+backend:
+  cache:
+    store: memory
+  scheduler:
+    scope: global
+  guest:
+    enabled: false
+
+permission:
+  enabled: true
+
+################################################################################
+# Backstage app-config.yaml (rendered into the container as app-config.yaml)
+################################################################################
+
+appConfig:
+
+  app:
+    title: RK Labs Developer Portal
+    baseUrl: https://backstage.rk-labs.xyz
+
+  organization:
+    name: RK Labs
+
+  backend:
+
+    baseUrl: https://backstage.rk-labs.xyz
+
+    listen:
+      port: 7007
+
+    cors:
+      origin: https://backstage.rk-labs.xyz
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+      credentials: true
+
+    logging:
+      level: info
+
+    database:
+      client: pg
+      connection:
+        host: ${POSTGRES_HOST}
+        port: ${POSTGRES_PORT}
+        user: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
+        database: ${POSTGRES_DB}
+
+  auth:
+    environment: production
+    providers:
+      github:
+        production:
+          clientId: ${GITHUB_CLIENT_ID}
+          clientSecret: ${GITHUB_CLIENT_SECRET}
+          signIn:
+            resolvers:
+              - resolver: usernameMatchingUserEntityName
+
+  integrations:
+    github:
+      - host: github.com
+        token: ${GITHUB_TOKEN}
+
+  catalog:
+    orphanStrategy: delete
+    rules:
+      - allow:
+          - Component
+          - API
+          - Resource
+          - Group
+          - User
+          - System
+          - Domain
+          - Template
+          - Location
+    providers: {}
+    locations:
+      - type: url
+        target: https://github.com/RKvamsi-lab/software-catalog/blob/main/all.yaml
+
+  techdocs:
+    builder: local
+    generator:
+      runIn: local
+    publisher:
+      type: local
+
+  scaffolder: {}
+
+  permission:
+    enabled: true
+
+  search:
+    collators:
+      catalog:
+        schedule:
+          frequency:
+            minutes: 10
+          timeout:
+            minutes: 5
+      techdocs:
+        schedule:
+          frequency:
+            minutes: 10
+          timeout:
+            minutes: 5
+
+  kubernetes:
+    serviceLocatorMethod:
+      type: multiTenant
+    clusterLocatorMethods:
+      - type: config
+        clusters:
+          - name: production
+            url: https://kubernetes.default.svc
+            authProvider: serviceAccount
+            skipTLSVerify: false
+
+  proxy: {}
